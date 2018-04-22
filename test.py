@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
-from utils.log import Log
-
+from logger import log
+from config import *
 
 def test1():
-    log = Log()
     log.info('haozigege')
     log.success('666666')
     log.warning('warning')
