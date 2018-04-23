@@ -1,9 +1,18 @@
 #!/usr/bin/env python
 
+'''
+This script is designed to provide the global data/queue for this program
+
+'''
+
+
+import Queue
+
 ###### basic config #########
 
 
-
+host_list = []
+debug = True
 
 ###########################
 
@@ -27,3 +36,13 @@ max_host_num = 2
 broadcast_time_span = 10
 
 ###############################
+
+##### message config ##########
+
+message_port = 6666
+message_queue = Queue.Queue()
+
+###############################
+
+
+

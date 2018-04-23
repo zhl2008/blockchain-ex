@@ -118,3 +118,260 @@
 [+] error
 [+] Listening for broadcast at ('0.0.0.0', 8888)
 [+] Find a peer: ('172.17.0.2', 47708)
+[+] haozigege
+[+] 666666
+[+] warning
+[+] error
+[+] haozigege
+[+] 666666
+[+] warning
+[+] error
+[+] Listening for message at ('0.0.0.0', 6666)
+[+] Killed by user
+[+] haozigege
+[+] 666666
+[+] warning
+[+] error
+[+] Sending broardcast...
+[+] Listening for broadcast at ('0.0.0.0', 8888)
+[+] Listening for message at ('0.0.0.0', 6666)
+[+] Find a peer: ('192.168.1.121', 53468)
+[+] Killed by user
+[+] haozigege
+[+] 666666
+[+] warning
+[+] error
+[+] Sending broardcast...
+[+] Listening for message at ('0.0.0.0', 6666)
+[+] Listening for broadcast at ('0.0.0.0', 8888)
+[+] Find a peer: ('192.168.1.121', 54308)
+[+] Killed by user
+[+] haozigege
+[+] 666666
+[+] warning
+[+] error
+[+] Sending broardcast...
+[+] Listening for message at ('0.0.0.0', 6666)
+[+] Listening for broadcast at ('0.0.0.0', 8888)
+[+] Find a peer: ('192.168.1.121', 60321)
+[+] Killed by user
+[+] haozigege
+[+] 666666
+[+] warning
+[+] error
+[+] Sending broardcast...
+[+] Listening for message at ('0.0.0.0', 6666)
+[+] Listening for broadcast at ('0.0.0.0', 8888)
+[+] Killed by user
+[+] haozigege
+[+] 666666
+[+] warning
+[+] error
+[+] Sending broardcast...
+[+] Listening for message at ('0.0.0.0', 6666)
+[+] Listening for broadcast at ('0.0.0.0', 8888)
+[+] Find a peer: ('192.168.1.121', 49684)
+[+] Killed by user
+[+] haozigege
+[+] 666666
+[+] warning
+[+] error
+[+] Sending broardcast...
+[+] Listening for message at ('0.0.0.0', 6666)
+[+] Listening for broadcast at ('0.0.0.0', 8888)
+[+] Broardcasting message...
+[+] Find a peer: ('192.168.1.121', 49519)
+[+] Killed by user
+[+] haozigege
+[+] 666666
+[+] warning
+[+] error
+[+] Sending broardcast...
+[+] Listening for message at ('0.0.0.0', 6666)
+[+] Broardcasting message...
+[+] Listening for broadcast at ('0.0.0.0', 8888)
+[+] Find a peer: ('192.168.1.121', 63555)
+[+] Broardcasting message...
+[+] Killed by user
+[+] haozigege
+[+] 666666
+[+] warning
+[+] error
+[+] Sending broardcast...
+[+] Listening for message at ('0.0.0.0', 6666)
+[+] Listening for broadcast at ('0.0.0.0', 8888)
+[+] Broardcasting message...
+[+] Find a peer: ('192.168.1.121', 62367)
+[+] Killed by user
+[+] haozigege
+[+] 666666
+[+] warning
+[+] error
+[+] Sending broardcast...
+[+] Listening for message at ('0.0.0.0', 6666)
+[+] Listening for broadcast at ('0.0.0.0', 8888)
+[+] Broardcasting message...
+[+] Find a peer: ('192.168.1.121', 54921)
+[+] Broardcasting message...
+[+] Killed by user
+[+] haozigege
+[+] 666666
+[+] warning
+[+] error
+[+] Listening for broadcast at ('0.0.0.0', 8888)
+[+] Sending broardcast...
+[+] Listening for message at ('0.0.0.0', 6666)
+[+] Broardcasting message...
+[+] Find a peer: ('192.168.1.121', 54333)
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Killed by user
+[+] haozigege
+[+] 666666
+[+] warning
+[+] error
+[+] Sending broardcast...
+[+] Listening for broadcast at ('0.0.0.0', 8888)
+[+] Broardcasting message...
+[+] Listening for message at ('0.0.0.0', 6666)
+[+] Find a peer: ('192.168.1.121', 49620)
+[+] Killed by user
+[+] haozigege
+[+] 666666
+[+] warning
+[+] error
+[+] Listening for broadcast at ('0.0.0.0', 8888)
+[+] Sending broardcast...
+[+] Listening for message at ('0.0.0.0', 6666)
+[+] Broardcasting message...
+[+] Find a peer: ('172.17.0.2', 33772)
+[+] Receive data: {"message":"hello world!"}
+[+] haozigege
+[+] 666666
+[+] warning
+[+] error
+[+] Listening for broadcast at ('0.0.0.0', 8888)
+[+] Sending broardcast...
+[+] Find a peer: ('172.17.0.3', 36326)
+[+] Find a peer: ('172.17.0.3', 36326)
+[+] Listening for message at ('0.0.0.0', 6666)
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Find a peer: ('172.17.0.2', 33772)
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] haozigege
+[+] 666666
+[+] warning
+[+] error
+[+] Listening for broadcast at ('0.0.0.0', 8888)
+[+] Sending broardcast...
+[+] Listening for message at ('0.0.0.0', 6666)
+[+] Broardcasting message...
+[+] Find a peer: ('172.17.0.4', 46023)
+[+] Receive data: {"message":"hello world!"}
+[+] haozigege
+[+] 666666
+[+] warning
+[+] error
+[+] Listening for broadcast at ('0.0.0.0', 8888)
+[+] Sending broardcast...
+[+] Listening for message at ('0.0.0.0', 6666)
+[+] Find a peer: ('172.17.0.5', 39811)
+[+] Find a peer: ('172.17.0.5', 39811)
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Find a peer: ('172.17.0.3', 36326)
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Receive data: {"message":"hello world!"}
+[+] Killed by user
+[+] Killed by user
+[+] Broardcasting message...
+[+] Receive data: {"message":"hello world!"}
+[+] Killed by user
+[+] Killed by user

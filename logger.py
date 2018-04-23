@@ -33,31 +33,43 @@ class log():
             log._print(msg)
 
     @staticmethod
-    def info(word):
+    def info(word,debug_print=False):
         msg = "[+] %s\n" % color.green(word)
+        if debug_print and not debug:
+            return
         log.my_log(msg,word)
 
     @staticmethod
-    def warning(word):
+    def warning(word,debug_print=False):
         msg = "[!] %s\n" % color.yellow(log.beauty(word))
+        if debug_print and not debug:
+            return
         log.my_log(msg,word)
 
     @staticmethod
-    def error(word):
+    def error(word,debug_print=False):
         msg = "[-] %s\n" % color.red(log.beauty(word))
+        if debug_print and not debug:
+            return
         log.my_log(msg,word)
 
     @staticmethod
-    def success(word):
+    def success(word,debug_print=False):
         msg = "[+] %s\n" % color.purple(log.beauty(word))
+        if debug_print and not debug:
+            return
         log.my_log(msg,word)
 
     @staticmethod
-    def query(word):
+    def query(word,debug_print=False):
         msg = "[?] %s\n" % color.underline(log.beauty(word))
+        if debug_print and not debug:
+            return
         log.my_log(msg,word)
 
     @staticmethod
-    def context(word):
+    def context(word,debug_print=False):
         msg = "%s\n" % (color.blue(word))
+        if debug_print and not debug:
+            return
         log.my_log(msg,word)

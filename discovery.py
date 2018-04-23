@@ -9,8 +9,7 @@ from config import *
 import time
 
 class discovery():
-    def __init__(self,message,port,host_list=[]):
-        self.host_list = host_list
+    def __init__(self,message,port):
         self.message = message 
         self.port = port
         # send socket
@@ -34,7 +33,7 @@ class discovery():
             data, address = self.s2.recvfrom(65535)
             if data == self.message:
                 # limit the number of the peers to connect to (using tcp)
-                if len(self.host_list) < max_host_num and address not in self.host_list:
-                    self.host_list.append(address)
+                if len(host_list) < max_host_num and address not in host_list:
+                    host_list.append(address)
                     log.info('Find a peer: %s'% str(address))
 
