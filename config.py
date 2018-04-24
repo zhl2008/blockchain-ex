@@ -44,5 +44,12 @@ message_queue = Queue.Queue()
 
 ###############################
 
+#### blockchain config #########
+
+blockchain_length = 0
+last_block_hash = ''
+
+################################
+
 
 
