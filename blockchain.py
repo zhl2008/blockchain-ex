@@ -9,10 +9,11 @@ This module create the functions concerning with blockchain, such as generate, u
 
 import rsa
 from logger import *
-from config import *
+import config 
 import json
 import pickle
 import hashlib
+import time
 
 class block():
     '''
@@ -24,7 +25,7 @@ class block():
     generating.
 
     '''
-    def __init__(self,prev_hash,height,difficulty,address,amount,signature="",nonce="",data="haozigege"):
+    def __init__(self,prev_hash,height,difficulty,address,amount=miner_reward,signature="",nonce="",data="haozigege"):
         self.prev_hash = prev_hash
         self.height = height
         self.nonce = nonce
@@ -32,7 +33,11 @@ class block():
         self.address = address
         self.amount = amount
         self.balance = get_balance(address)
-        self.signature = signature
+        # if the signature is blank, and the address is from our own server, create the signature
+        if not signature and address==config.pubkey:
+            self.signature = rsa.sign(address + data,pickle.loads(config.privkey.decode('hex')),'SHA-256').encode('hex')
+        else:
+            self.signature = signature
         self.data = data
 
     def generate(self):
@@ -44,8 +49,6 @@ class block():
         , if the meta info is changed, stop the generate process and start a new one
 
         '''
-        # signature should be updated according to your address, sign with your privkey
-        self.signature = ''
         # $$$$$ to be replaced laterly
         self.nonce = '$$$$$'
         template = str(self.output())
@@ -53,16 +56,18 @@ class block():
         while True:
             self.nonce = hashlib.sha256(str(seed)).hexdigest()
             my_block = template.replace('$$$$$',self.nonce)
-            if verify_diff(hashlib.sha256(my_block)):
+            if verify_diff(hashlib.sha256(my_block).hexdigest(),self.difficulty):
                 # find a new block, stop, nonce has been updated
+                log.info('One block has been found!')
+                print self.output()
                 return self.output()
-            if block_updated:
+            if config.block_updated:
                 log.info('Meta data has been updated!')
                 # if the meta info has been updated, stop, and then restart
                 block_updated = 0
                 return {}
             seed += 1
-            time.sleep(miner_sleep_time)
+            #time.sleep(miner_sleep_time)
 
 
         
@@ -92,7 +97,7 @@ class block():
 
         '''
 
-        flag_1 = rsa.verify(self.data,self.signature.decode('hex'),rsa.PublicKey(int(address, 16), 65537))
+        flag_1 = rsa.verify(self.address + self.data,self.signature.decode('hex'),rsa.PublicKey(int(self.address, 16), 65537))
         flag_2 = verify_diff(hashlib.sha256(str(output)).hexdigest(),self.difficulty)
         return (flag_1 and flag_2) 
 
@@ -105,6 +110,7 @@ def init_blockchain():
 
     '''
     load_current_hash()
+    load_current_balance()
 
 
 def load_current_hash():
@@ -112,7 +118,7 @@ def load_current_hash():
     generate the maps from height to hash
     '''
     log.info('Loading current hash...')
-    for tmp in os.walk(blockchain_dir):
+    for tmp in os.walk(config.blockchain_dir):
         pass
     # the filenames are stored in the tmp[0][2]
     filenames = tmp[2]
@@ -122,14 +128,14 @@ def load_current_hash():
     for filename in filenames:
         if filename!='meta':
             height,my_hash = filename.split('-')
-            blockchain_list[height] = my_hash
+            config.blockchain_list[height] = my_hash
    
 def load_current_balance():
     '''
     load current balance from files
     '''
-    for height,my_hash in blockchain_list.items():
-        filename = blockchain_dir + height + '-' + my_hash
+    for height,my_hash in config.blockchain_list.items():
+        filename = config.blockchain_dir + height + '-' + my_hash
         block = json.loads(open(filename,'r').read())
         transaction = block['transaction']
         address = transaction[0]['output']['address']
@@ -145,33 +151,49 @@ def generate_genesis_block():
     the genesis block
     
     '''
-    blockchain_dir = 'blockchain/%s/' %my_addr
     
     prev_hash = '0000000000000000000000000000000000000000000000000000000000000000'
+
     nonce = '0000000000000000000000000000000000000000000000000000000000000000'
-    difficulty = ''
+    difficulty = hex(int(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff/1000))[2:-1]
     height = 1
     data = 'The Times 24/4/2018 Hencecoin start'
-    signature = rsa.sign(pubkey + data,pickle.loads(privkey.decode('hex')),'SHA-1').encode('hex')
     address = pubkey
 
-    b = block(prev_hash=prev_hash,height=height,difficulty=difficulty,address=address,amount=100,signature=signature,nonce=nonce,data=data)
+    b = block(prev_hash=prev_hash,height=height,difficulty=difficulty,address=address,nonce=nonce,data=data)
     res = b.output()
-   
     log.info('Generate genesis block...')
     log.info(str(res),True)
     my_hash = hashlib.sha256(str(res)).hexdigest()
     filename = '1' + '-' +  my_hash
-    blockchain_filename = blockchain_dir + filename
+    blockchain_filename = config.blockchain_dir + filename
     open(blockchain_filename,'w').write(json.dumps(res))
+    config.global_prev_hash = my_hash
+    config.global_height = height + 1
+    config.global_difficulty = update_difficulty(difficulty)
 
+
+def update_difficulty(difficulty):
+    '''
+    to update the difficulty according to the former calculation time
+    '''
+    return difficulty
 
 def get_balance(address):
+    '''
+    get user balance from the balance_list
+    '''
     if address in balance_list:
         return balance_list[address]
     else:
         return 0
 
-def verify_diff(hash,difficulty):
-    pass
+def verify_diff(my_hash,difficulty):
+    log.context(my_hash,True)
+    log.context(difficulty,True)
+    if int(my_hash,16) <= int(difficulty,16):
+        log.context(my_hash,True)
+        return True
+    else:
+        return False
 

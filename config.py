@@ -85,7 +85,11 @@ blockchain_dir = 'blockchain/%s/' %my_addr
 blockinfo = {}
 balance_list = {}
 blockchain_list = {}
-
+global_prev_hash = ''
+global_height = ''
+global_difficulty = 'haozigege'
+print 'import config'
+miner_reward = 100
 ################################
 
 

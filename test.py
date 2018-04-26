@@ -2,10 +2,11 @@
 
 import sys
 from logger import log
-from config import *
+import config
 from discovery import *
 from message import *
 import threading
+from blockchain import *
 
 def test1():
     log.info('haozigege')
@@ -32,15 +33,15 @@ def test5():
         time.sleep(10)
 
 def test6():
-    from blockchain import *
     generate_genesis_block()
 
 def test7():
-    from blockchain import *
     load_current_hash()
     log.info(str(blockchain_list))
     load_current_balance()
     log.info(str(balance_list))
+    b = block(prev_hash=config.global_prev_hash,height=config.global_height,difficulty=config.global_difficulty,address=config.pubkey)
+    b.generate()
 
 test1()
 t2 = threading.Thread(target=test2)
