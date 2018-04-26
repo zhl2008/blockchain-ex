@@ -73,8 +73,19 @@ class block():
             seed += 1
             #time.sleep(miner_sleep_time)
 
+    def is_next(self):
+        '''
+        judge whether a block is next to the latest block, if so, return true
+        '''
+        if self.prev_hash == global_prev_hash
+            return True
+        return False
 
-        
+    def update(self):
+        '''
+        if the new block is next to our latest block, then using it to update our blockchain
+        '''
+        pass
 
     def output(self):
         output = {}
@@ -97,7 +108,7 @@ class block():
         some of the transaction in later work, so here I preserve the sample implementation of 
         signature verification to notice myself of that
     
-        sign = rsa.sign => (pubkey + data)
+        sign = rsa.sign => (config.pubkey + data)
 
         '''
 
@@ -177,7 +188,7 @@ def generate_genesis_block():
     difficulty = hex(int(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff/1000))[2:-1]
     height = 1
     data = 'The Times 24/4/2018 Hencecoin start'
-    address = pubkey
+    address = config.pubkey
 
     b = block(prev_hash=prev_hash,height=height,difficulty=difficulty,address=address,nonce=nonce,data=data)
     res = b.output()
