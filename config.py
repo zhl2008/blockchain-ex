@@ -48,8 +48,35 @@ message_queue = Queue.Queue()
 
 blockchain_length = 0
 last_block_hash = ''
+block_updated = 0
+miner_sleep_time = 1
+block_height = 0
 
 ################################
+
+#### ip config ################
+
+import socket
+import os
+my_name = socket.getfqdn(socket.gethostname(  ))
+my_addr = socket.gethostbyname(my_name)
+if not os.path.exists('blockchain/%s'%my_addr):
+    os.mkdir('blockchain/%s'%my_addr)
+    os.system('touch blockchain/%s/meta'%my_addr)
+
+##############################
+
+#### key config ###############
+
+from tools.generate_key import *
+admin_pubkey = '68417869136203721917051245941136583605259118843664693293743712222590878008563'
+if not os.path.exists('key/%s'%my_addr):
+    os.mkdir('key/%s'%my_addr)
+    pubkey,privkey = generate_key()
+    open('key/%s/mykey'%my_addr,'w').write(pubkey + "\n" + privkey)
+
+###############################
+
 
 
 
