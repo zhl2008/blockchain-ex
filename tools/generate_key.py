@@ -9,7 +9,7 @@ import pickle
 import rsa
 
 def generate_key():
-    pubkey, privkey = rsa.newkeys(256)
+    pubkey, privkey = rsa.newkeys(512)
     pubkey = pubkey.n
     privkey = pickle.dumps(privkey).encode('hex')
     return str(pubkey),privkey

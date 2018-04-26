@@ -10,6 +10,9 @@ This module create the functions concerning with blockchain, such as generate, u
 import rsa
 from logger import *
 from config import *
+import json
+import pickle
+import hashlib
 
 class block():
     '''
@@ -21,15 +24,16 @@ class block():
     generating.
 
     '''
-    def __init__(self,prev_hash,height,difficulty,address,amount,signature="",nonce=""):
+    def __init__(self,prev_hash,height,difficulty,address,amount,signature="",nonce="",data="haozigege"):
         self.prev_hash = prev_hash
+        self.height = height
         self.nonce = nonce
         self.difficulty = difficulty
         self.address = address
         self.amount = amount
         self.balance = get_balance(address)
         self.signature = signature
-o
+        self.data = data
 
     def generate(self):
         '''
@@ -70,10 +74,12 @@ o
         output['height'] = self.height
         output['difficulty'] = self.difficulty
         output['transaction'] = [{},]
+        output['transaction'][0]['input'] = [{},{}]
         output['transaction'][0]['input'][0] = {"address":"god","amount":"100"}
         output['transaction'][0]['input'][1] = {"address":self.address,"amount":self.balance}
         output['transaction'][0]['output'] = {"address":self.address}
         output['transaction'][0]['signature'] = self.signature
+        output['transaction'][0]['data'] = self.data
         return output
 
     def verify(self):
@@ -81,9 +87,12 @@ o
         since we have not implement the full version of the blockchain, but we may want to verify
         some of the transaction in later work, so here I preserve the sample implementation of 
         signature verification to notice myself of that
+    
+        sign = rsa.sign => (pubkey + data)
+
         '''
 
-        flag_1 = rsa.verify('haozigege',self.signature.decode('hex'),rsa.PublicKey(int(address, 16), 65537))
+        flag_1 = rsa.verify(self.data,self.signature.decode('hex'),rsa.PublicKey(int(address, 16), 65537))
         flag_2 = verify_diff(hashlib.sha256(str(output)).hexdigest(),self.difficulty)
         return (flag_1 and flag_2) 
 
@@ -95,14 +104,38 @@ def init_blockchain():
     3. establish the index of the blockchain according to the filename of blocks
 
     '''
-    blockchain_dir = 'blockchain/%s/' %my_addr 
+    load_current_hash()
+
+
+def load_current_hash():
+    '''
+    generate the maps from height to hash
+    '''
+    log.info('Loading current hash...')
     for tmp in os.walk(blockchain_dir):
         pass
     # the filenames are stored in the tmp[0][2]
-    filenames = tmp[0][2]
+    filenames = tmp[2]
     blockchain_height = len(filenames) - 1
     if blockchain_height == 0:
         generate_genesis_block()
+    for filename in filenames:
+        if filename!='meta':
+            height,my_hash = filename.split('-')
+            blockchain_list[height] = my_hash
+   
+def load_current_balance():
+    '''
+    load current balance from files
+    '''
+    for height,my_hash in blockchain_list.items():
+        filename = blockchain_dir + height + '-' + my_hash
+        block = json.loads(open(filename,'r').read())
+        transaction = block['transaction']
+        address = transaction[0]['output']['address']
+        if address not in balance_list:
+            balance = int(transaction[0]['input'][0]['amount']) + int(transaction[0]['input'][1]['amount'])
+            balance_list[address] = balance
 
 
 
@@ -112,16 +145,32 @@ def generate_genesis_block():
     the genesis block
     
     '''
-
-
     blockchain_dir = 'blockchain/%s/' %my_addr
-
-
-    b = block(
     
+    prev_hash = '0000000000000000000000000000000000000000000000000000000000000000'
+    nonce = '0000000000000000000000000000000000000000000000000000000000000000'
+    difficulty = ''
+    height = 1
+    data = 'The Times 24/4/2018 Hencecoin start'
+    signature = rsa.sign(pubkey + data,pickle.loads(privkey.decode('hex')),'SHA-1').encode('hex')
+    address = pubkey
+
+    b = block(prev_hash=prev_hash,height=height,difficulty=difficulty,address=address,amount=100,signature=signature,nonce=nonce,data=data)
+    res = b.output()
+   
+    log.info('Generate genesis block...')
+    log.info(str(res),True)
+    my_hash = hashlib.sha256(str(res)).hexdigest()
+    filename = '1' + '-' +  my_hash
+    blockchain_filename = blockchain_dir + filename
+    open(blockchain_filename,'w').write(json.dumps(res))
+
 
 def get_balance(address):
-    pass
+    if address in balance_list:
+        return balance_list[address]
+    else:
+        return 0
 
 def verify_diff(hash,difficulty):
     pass

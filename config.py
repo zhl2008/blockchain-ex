@@ -44,15 +44,6 @@ message_queue = Queue.Queue()
 
 ###############################
 
-#### blockchain config #########
-
-blockchain_length = 0
-last_block_hash = ''
-block_updated = 0
-miner_sleep_time = 1
-block_height = 0
-
-################################
 
 #### ip config ################
 
@@ -69,14 +60,32 @@ if not os.path.exists('blockchain/%s'%my_addr):
 #### key config ###############
 
 from tools.generate_key import *
-admin_pubkey = '68417869136203721917051245941136583605259118843664693293743712222590878008563'
+
+admin_pubkey = '9765869799823383359622359754181812625324231512026077082381651287440341672379839014722257386111774035152974440781781367383855004017506803031463021493485593'
 if not os.path.exists('key/%s'%my_addr):
     os.mkdir('key/%s'%my_addr)
     pubkey,privkey = generate_key()
     open('key/%s/mykey'%my_addr,'w').write(pubkey + "\n" + privkey)
+else:
+    pubkey,privkey = open('key/%s/mykey'%my_addr).readlines()
+    pubkey = pubkey.strip()
+    privkey = privkey.strip()
 
 ###############################
 
 
+#### blockchain config #########
+
+blockchain_length = 0
+last_block_hash = ''
+block_updated = 0
+miner_sleep_time = 1
+block_height = 0
+blockchain_dir = 'blockchain/%s/' %my_addr
+blockinfo = {}
+balance_list = {}
+blockchain_list = {}
+
+################################
 
 

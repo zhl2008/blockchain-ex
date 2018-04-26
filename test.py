@@ -31,6 +31,17 @@ def test5():
         m.send_all()
         time.sleep(10)
 
+def test6():
+    from blockchain import *
+    generate_genesis_block()
+
+def test7():
+    from blockchain import *
+    load_current_hash()
+    log.info(str(blockchain_list))
+    load_current_balance()
+    log.info(str(balance_list))
+
 test1()
 t2 = threading.Thread(target=test2)
 t2.setDaemon(True)
@@ -47,6 +58,9 @@ t4.start()
 t5 = threading.Thread(target=test5)
 t5.setDaemon(True)
 t5.start()
+
+test6()
+test7()
 
 try:
     while True:
