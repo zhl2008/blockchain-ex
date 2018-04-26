@@ -33,7 +33,7 @@ def test5():
         time.sleep(10)
 
 def test6():
-    generate_genesis_block()
+    pass
 
 def test7():
     load_current_hash()

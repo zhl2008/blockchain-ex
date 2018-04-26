@@ -56,11 +56,15 @@ class block():
         while True:
             self.nonce = hashlib.sha256(str(seed)).hexdigest()
             my_block = template.replace('$$$$$',self.nonce)
-            if verify_diff(hashlib.sha256(my_block).hexdigest(),self.difficulty):
+            my_hash = hashlib.sha256(my_block).hexdigest()
+            if verify_diff(my_hash,self.difficulty):
                 # find a new block, stop, nonce has been updated
                 log.info('One block has been found!')
-                print self.output()
-                return self.output()
+                res = self.output()
+                log.context(str(res),True)
+                filename = config.blockchain_dir + str(self.height) + '-' + my_hash
+                open(filename,'w').write(json.dumps(res))
+                return res
             if config.block_updated:
                 log.info('Meta data has been updated!')
                 # if the meta info has been updated, stop, and then restart
@@ -122,19 +126,34 @@ def load_current_hash():
         pass
     # the filenames are stored in the tmp[0][2]
     filenames = tmp[2]
-    blockchain_height = len(filenames) - 1
+    blockchain_height = len(filenames)
     if blockchain_height == 0:
         generate_genesis_block()
+        config.blockchain_list['1'] = config.global_prev_hash
+        return
     for filename in filenames:
         if filename!='meta':
             height,my_hash = filename.split('-')
             config.blockchain_list[height] = my_hash
+    tmp = sorted(config.blockchain_list.items(),key=lambda x:x[0])
+    last_block = tmp[-1]
+    log.context(str(last_block),True)
+    config.global_prev_hash = last_block[1]
+    config.global_height = int(last_block[0]) + 1 
+    last_block_filename = blockchain_dir + last_block[0] + '-' + last_block[1]
+    last_block_info = json.loads(open(last_block_filename,'r').read())
+    difficulty = last_block_info['difficulty']
+    config.global_difficulty = update_difficulty(difficulty)
+
+
+
+
    
 def load_current_balance():
     '''
     load current balance from files
     '''
-    for height,my_hash in config.blockchain_list.items():
+    for height,my_hash in sorted(config.blockchain_list.items(),key=lambda x:x[0],reverse=True):
         filename = config.blockchain_dir + height + '-' + my_hash
         block = json.loads(open(filename,'r').read())
         transaction = block['transaction']
@@ -190,7 +209,7 @@ def get_balance(address):
 
 def verify_diff(my_hash,difficulty):
     log.context(my_hash,True)
-    log.context(difficulty,True)
+    #log.context(difficulty,True)
     if int(my_hash,16) <= int(difficulty,16):
         log.context(my_hash,True)
         return True

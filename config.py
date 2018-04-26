@@ -53,7 +53,6 @@ my_name = socket.getfqdn(socket.gethostname(  ))
 my_addr = socket.gethostbyname(my_name)
 if not os.path.exists('blockchain/%s'%my_addr):
     os.mkdir('blockchain/%s'%my_addr)
-    os.system('touch blockchain/%s/meta'%my_addr)
 
 ##############################
 
@@ -88,8 +87,8 @@ blockchain_list = {}
 global_prev_hash = ''
 global_height = ''
 global_difficulty = 'haozigege'
-print 'import config'
 miner_reward = 100
+
 ################################
 
 
