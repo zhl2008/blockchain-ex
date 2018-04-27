@@ -25,7 +25,7 @@ class block():
     generating.
 
     '''
-    def __init__(self,prev_hash,height,difficulty,address,amount=miner_reward,signature="",nonce="",data="haozigege"):
+    def __init__(self,prev_hash,height,difficulty,address,amount=config.miner_reward,signature="",nonce="",data="haozigege"):
         self.prev_hash = prev_hash
         self.height = height
         self.nonce = nonce
@@ -61,14 +61,12 @@ class block():
                 # find a new block, stop, nonce has been updated
                 log.info('One block has been found!')
                 res = self.output()
-                log.context(str(res),True)
-                filename = config.blockchain_dir + str(self.height) + '-' + my_hash
-                open(filename,'w').write(json.dumps(res))
+                log.info(str(res),True)
                 return res
             if config.block_updated:
                 log.info('Meta data has been updated!')
                 # if the meta info has been updated, stop, and then restart
-                block_updated = 0
+                config.block_updated = 0
                 return {}
             seed += 1
             #time.sleep(miner_sleep_time)
@@ -77,25 +75,55 @@ class block():
         '''
         judge whether a block is next to the latest block, if so, return true
         '''
-        if self.prev_hash == global_prev_hash
+        if self.prev_hash == config.global_prev_hash:
             return True
         return False
 
     def update(self):
         '''
         if the new block is next to our latest block, then using it to update our blockchain
+        the steps of updation:
+        1. save the new block to file
+        2. update the balance_list, blockchain_list and some other global variables
+        3. if the miner is from other host, then update the block_updated to 1
         '''
-        pass
+        if not self.is_next():
+            log.error('Hash mismatch!')
+            return
+        log.info('Updating the blocks...')
+        res = self.output()
+        my_hash = hashlib.sha256(str(res)).hexdigest()
+        log.info(str(res),True)
+        filename = config.blockchain_dir + str(self.height) + '-' + my_hash
+        open(filename,'w').write(json.dumps(res))
+
+        balance_addr = res['transaction'][0]['input'][1]['address']
+        balance = res['transaction'][0]['input'][1]['amount']
+        config.balance_list[balance_addr] = balance + config.miner_reward
+
+        config.blockchain_list[str(self.height)] = my_hash
+        config.global_prev_hash = my_hash
+        config.global_height = self.height + 1
+        config.global_difficulty = update_difficulty(self.difficulty)
+
+        if not self.address==config.pubkey:
+            # not our own address, so this block is received from other host
+            config.block_updated = 1
+
+        
+
+
+        
 
     def output(self):
         output = {}
-        output['pre_hash'] = self.prev_hash
+        output['prev_hash'] = self.prev_hash
         output['nonce'] = self.nonce
         output['height'] = self.height
         output['difficulty'] = self.difficulty
         output['transaction'] = [{},]
         output['transaction'][0]['input'] = [{},{}]
-        output['transaction'][0]['input'][0] = {"address":"god","amount":"100"}
+        output['transaction'][0]['input'][0] = {"address":"god","amount":config.miner_reward}
         output['transaction'][0]['input'][1] = {"address":self.address,"amount":self.balance}
         output['transaction'][0]['output'] = {"address":self.address}
         output['transaction'][0]['signature'] = self.signature
@@ -226,4 +254,5 @@ def verify_diff(my_hash,difficulty):
         return True
     else:
         return False
+
 

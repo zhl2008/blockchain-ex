@@ -42,6 +42,15 @@ def test7():
     log.info(str(balance_list))
     b = block(prev_hash=config.global_prev_hash,height=config.global_height,difficulty=config.global_difficulty,address=config.pubkey)
     b.generate()
+    b.update()
+    b = block(prev_hash=config.global_prev_hash,height=config.global_height,difficulty=config.global_difficulty,address=config.pubkey)
+    res = b.generate()
+     
+    b_c = block(prev_hash=res['prev_hash'],height=res['height'],difficulty=res['difficulty'],address=config.pubkey,nonce=res['nonce'])
+
+    print b_c.output()
+    b_c.update()
+
 
 test1()
 t2 = threading.Thread(target=test2)
