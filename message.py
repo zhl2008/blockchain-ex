@@ -32,7 +32,13 @@ class message(object):
             ss, address = s2.accept()
             data = ss.recv(65535)
             log.info('Receive data: %s' % data, True)
-            message_queue.put({'data':data,'address':address[0]})
+            config.message_queue.put({'data':data,'address':address[0]})
+
+    def handle(self):
+        while True:
+            if not config.message_queue.empty():
+                raw_msg = config.message_queue.get()
+                log.info('handling message',True)
 
     def request(self,height):
         msg = {"method":"block_request", "height":height,"content":""}
@@ -44,6 +50,10 @@ class message(object):
         content = open(block_filename).read()
         msg = {"method":"block_reply","height":height}
         msg["content"] = content
+        self.msg = json.dumps(msg)
+
+    def legacy_reply(self,height):
+        msg = {"method":"legacy_reply","height":height,"content":"do not reply"}
         self.msg = json.dumps(msg)
 
     def admin(self,method):

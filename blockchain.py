@@ -70,6 +70,7 @@ class block():
                 return {}
             seed += 1
             #time.sleep(miner_sleep_time)
+            time.sleep(0.1)
 
     def is_next(self):
         '''
