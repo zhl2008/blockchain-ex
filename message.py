@@ -9,8 +9,9 @@ blockchain and this program
 
 import socket
 from config import *
+import config
 from logger import *
-
+import json
 
 class message(object):
     def __init__(self,msg,msg_port):
@@ -33,6 +34,22 @@ class message(object):
             log.info('Receive data: %s' % data, True)
             message_queue.put({'data':data,'address':address[0]})
 
+    def request(self,height):
+        msg = {"method":"block_request", "height":height,"content":""}
+        self.msg = json.dumps(msg)
+
+    def reply(self,height):
+        block_hash = config.blockchain_list[str(height)]
+        block_filename = config.blockchain_dir + str(height) + '-' + block_hash
+        content = open(block_filename).read()
+        msg = {"method":"block_reply","height":height}
+        msg["content"] = content
+        self.msg = json.dumps(msg)
+
+    def admin(self,method):
+        msg = {"method":"admin", "height":height,"content":method}
+        self.msg = json.dumps(msg)
+        
     def send_all(self):
         log.info('Broardcasting message...')
         for host in host_list:

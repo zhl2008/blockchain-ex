@@ -51,6 +51,12 @@ def test7():
     print b_c.output()
     b_c.update()
 
+def test8():
+    m = message("",6666)
+    m.request(1)
+    m.send_all()
+    m.reply(1)
+    m.send_all()
 
 test1()
 t2 = threading.Thread(target=test2)
@@ -71,6 +77,7 @@ t5.start()
 
 test6()
 test7()
+test8()
 
 try:
     while True:
