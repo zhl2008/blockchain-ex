@@ -12,7 +12,7 @@ import Queue
 
 
 host_list = []
-debug = True
+debug = False
 
 ###########################
 
@@ -33,7 +33,8 @@ log_into_console = True
 broardcast_port = 8888
 broardcast_msg = 'haozigege666'
 max_host_num = 2
-broadcast_time_span = 10
+broadcast_time_span = 5
+
 
 ###############################
 
@@ -78,7 +79,7 @@ else:
 blockchain_length = 0
 last_block_hash = ''
 block_updated = 0
-miner_sleep_time = 1
+miner_sleep_time = 0.1
 block_height = 0
 blockchain_dir = 'blockchain/%s/' %my_addr
 blockinfo = {}
@@ -88,6 +89,7 @@ global_prev_hash = ''
 global_height = ''
 global_difficulty = 'haozigege'
 miner_reward = 100
+admin_pubkey = '9765869799823383359622359754181812625324231512026077082381651287440341672379839014722257386111774035152974440781781367383855004017506803031463021493485593'
 
 ################################
 

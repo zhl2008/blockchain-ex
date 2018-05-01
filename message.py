@@ -11,6 +11,7 @@ import socket
 from config import *
 import config
 from logger import *
+from blockchain import *
 import json
 
 class message(object):
@@ -46,6 +47,7 @@ class message(object):
 
         while True:
             if not config.message_queue.empty():
+                log.info('Handing incoming message...',True)
                 raw_msg = config.message_queue.get()
                 my_msg = json.loads(raw_msg['data'])
                 self.addresss = raw_msg['address']
@@ -71,7 +73,7 @@ class message(object):
         try to check the prev_hash of the block, if hash matches, then we accept
         the block, and update the blockchain using the message.update method; if 
         the hash mismatches, stop the miner. And we may ask for an elder block until
-        the pre_hash matches, all of the blocks are stored locally, and we 
+        the prev_hash matches, all of the blocks are stored locally, and we 
         initialize the whole block chain
 
         2. if the block height higher than the global_block_height, then we send a 
@@ -81,7 +83,6 @@ class message(object):
         just ignore it
         '''
         log.info('Handling block reply...',True)
-        print self.msg
         height = self.msg['height']
         prev_hash = self.msg['prev_hash']
         difficulty = self.msg['difficulty']
@@ -90,6 +91,8 @@ class message(object):
         signature = self.msg['transaction'][0]['signature']
         nonce = self.msg['nonce']
         data = self.msg['transaction'][0]['data']
+        print self.msg
+        print height,config.global_height
 
         if config.global_height == height:
             # hash matches

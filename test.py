@@ -42,6 +42,7 @@ def test7():
     log.info(str(balance_list))
     b = block(prev_hash=config.global_prev_hash,height=config.global_height,difficulty=config.global_difficulty,address=config.pubkey)
     b.generate()
+    b.verify()
     b.update()
     b = block(prev_hash=config.global_prev_hash,height=config.global_height,difficulty=config.global_difficulty,address=config.pubkey)
     res = b.generate()

@@ -36,6 +36,8 @@ class block():
         # if the signature is blank, and the address is from our own server, create the signature
         if not signature and address==config.pubkey:
             self.signature = rsa.sign(address + data,pickle.loads(config.privkey.decode('hex')),'SHA-256').encode('hex')
+            flag_1 = rsa.verify(self.address + data,self.signature.decode('hex'),rsa.PublicKey(int(self.address, 16), 65537))
+            
         else:
             self.signature = signature
         self.data = data
@@ -70,7 +72,7 @@ class block():
                 return {}
             seed += 1
             #time.sleep(miner_sleep_time)
-            time.sleep(0.1)
+            #time.sleep(0.1)
 
     def is_next(self):
         '''
@@ -140,7 +142,6 @@ class block():
         sign = rsa.sign => (config.pubkey + data)
 
         '''
-
         flag_1 = rsa.verify(self.address + self.data,self.signature.decode('hex'),rsa.PublicKey(int(self.address, 16), 65537))
         flag_2 = verify_diff(hashlib.sha256(str(output)).hexdigest(),self.difficulty)
         return (flag_1 and flag_2) 
@@ -217,7 +218,7 @@ def generate_genesis_block():
     difficulty = hex(int(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff/1000))[2:-1]
     height = 1
     data = 'The Times 24/4/2018 Hencecoin start'
-    address = config.pubkey
+    address = config.admin_pubkey
 
     b = block(prev_hash=prev_hash,height=height,difficulty=difficulty,address=address,nonce=nonce,data=data)
     res = b.output()
@@ -226,6 +227,7 @@ def generate_genesis_block():
     my_hash = hashlib.sha256(str(res)).hexdigest()
     filename = '1' + '-' +  my_hash
     blockchain_filename = config.blockchain_dir + filename
+
     open(blockchain_filename,'w').write(json.dumps(res))
     config.global_prev_hash = my_hash
     config.global_height = height + 1
