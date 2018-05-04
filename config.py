@@ -12,7 +12,7 @@ import Queue
 
 
 host_list = []
-debug = False
+debug = True
 
 ###########################
 
@@ -61,7 +61,7 @@ if not os.path.exists('blockchain/%s'%my_addr):
 
 from tools.generate_key import *
 
-admin_pubkey = '9765869799823383359622359754181812625324231512026077082381651287440341672379839014722257386111774035152974440781781367383855004017506803031463021493485593'
+admin_pubkey = 'ba7693c5c1f80bd85c0ede83713f491c2b9a72039f77683495155e66e6dddd2f1c107c6b1a5b5419aa1324cfe8fb61afe892bd3250760e9255594090b39a0019'
 if not os.path.exists('key/%s'%my_addr):
     os.mkdir('key/%s'%my_addr)
     pubkey,privkey = generate_key()

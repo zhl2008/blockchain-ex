@@ -50,9 +50,11 @@ class message(object):
                 log.info('Handing incoming message...',True)
                 raw_msg = config.message_queue.get()
                 my_msg = json.loads(raw_msg['data'])
-                self.addresss = raw_msg['address']
+                self.ip_address = raw_msg['address']
                 method = my_msg['method']
+                self.height = my_msg['height']
                 self.msg = json.loads(my_msg['content'])
+                log.info(my_msg['content'],True)
                 func = getattr(self,'handle_' + method)
                 func()
 
@@ -62,8 +64,9 @@ class message(object):
         reply function
         '''
         log.info('Handling block request...',True)
-        height = self.msg['height']
+        height = self.height
         self.reply(height)
+        self.send(self.ip_address)
 
     def handle_block_reply(self):
         '''
@@ -91,8 +94,7 @@ class message(object):
         signature = self.msg['transaction'][0]['signature']
         nonce = self.msg['nonce']
         data = self.msg['transaction'][0]['data']
-        print self.msg
-        print height,config.global_height
+        print config.global_height,height
 
         if config.global_height == height:
             # hash matches
@@ -107,15 +109,19 @@ class message(object):
                 log.info('Receiving elder block...')
 
         elif config.global_height < height:
-            self.reply(config.global_height)
+            self.request(config.global_height)
+            self.send(self.ip_address)
         else:
             pass
 
         
 
     def request(self,height):
-        msg = {"method":"block_request", "height":height,"content":""}
+        extra = json.dumps({"extra":"helloworld"})
+        msg = {"method":"block_request", "height":height,"content":extra}
         self.msg = json.dumps(msg)
+        log.info('This is request',True)
+        log.info(self.msg,True)
 
     def reply(self,height):
         block_hash = config.blockchain_list[str(height)]
@@ -124,18 +130,22 @@ class message(object):
         msg = {"method":"block_reply","height":height}
         msg["content"] = content
         self.msg = json.dumps(msg)
+        log.info('This is reply',True)
+        log.info(self.msg,True)
 
     def legacy_reply(self,height):
-        msg = {"method":"legacy_reply","height":height,"content":"do not reply"}
+        extra = json.dumps({"extra":"do not reply"})
+        msg = {"method":"legacy_reply","height":height,"content":extra}
         self.msg = json.dumps(msg)
 
     def admin(self,method):
+        method = json.dumps({"method":method})
         msg = {"method":"admin", "height":height,"content":method}
         self.msg = json.dumps(msg)
         
     def send_all(self):
         log.info('Broardcasting message...')
-        for host in host_list:
+        for host in config.host_list:
             self.send(host[0])
     
         

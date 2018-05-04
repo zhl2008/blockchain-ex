@@ -36,8 +36,6 @@ class block():
         # if the signature is blank, and the address is from our own server, create the signature
         if not signature and address==config.pubkey:
             self.signature = rsa.sign(address + data,pickle.loads(config.privkey.decode('hex')),'SHA-256').encode('hex')
-            flag_1 = rsa.verify(self.address + data,self.signature.decode('hex'),rsa.PublicKey(int(self.address, 16), 65537))
-            
         else:
             self.signature = signature
         self.data = data
@@ -53,7 +51,7 @@ class block():
         '''
         # $$$$$ to be replaced laterly
         self.nonce = '$$$$$'
-        template = str(self.output())
+        template = json.dumps(self.output())
         seed = 0
         while True:
             self.nonce = hashlib.sha256(str(seed)).hexdigest()
@@ -63,7 +61,7 @@ class block():
                 # find a new block, stop, nonce has been updated
                 log.info('One block has been found!')
                 res = self.output()
-                log.info(str(res),True)
+                log.info(json.dumps(res),True)
                 return res
             if config.block_updated:
                 log.info('Meta data has been updated!')
@@ -72,12 +70,13 @@ class block():
                 return {}
             seed += 1
             #time.sleep(miner_sleep_time)
-            #time.sleep(0.1)
+            time.sleep(0.1)
 
     def is_next(self):
         '''
         judge whether a block is next to the latest block, if so, return true
         '''
+        #print self.prev_hash,config.global_prev_hash
         if self.prev_hash == config.global_prev_hash:
             return True
         return False
@@ -95,8 +94,8 @@ class block():
             return
         log.info('Updating the blocks...')
         res = self.output()
-        my_hash = hashlib.sha256(str(res)).hexdigest()
-        log.info(str(res),True)
+        my_hash = hashlib.sha256(json.dumps(res)).hexdigest()
+        log.info(json.dumps(res),True)
         filename = config.blockchain_dir + str(self.height) + '-' + my_hash
         open(filename,'w').write(json.dumps(res))
 
@@ -143,7 +142,7 @@ class block():
 
         '''
         flag_1 = rsa.verify(self.address + self.data,self.signature.decode('hex'),rsa.PublicKey(int(self.address, 16), 65537))
-        flag_2 = verify_diff(hashlib.sha256(str(output)).hexdigest(),self.difficulty)
+        flag_2 = verify_diff(hashlib.sha256(json.dumps(self.output())).hexdigest(),self.difficulty)
         return (flag_1 and flag_2) 
 
 def init_blockchain():
@@ -223,8 +222,8 @@ def generate_genesis_block():
     b = block(prev_hash=prev_hash,height=height,difficulty=difficulty,address=address,nonce=nonce,data=data)
     res = b.output()
     log.info('Generate genesis block...')
-    log.info(str(res),True)
-    my_hash = hashlib.sha256(str(res)).hexdigest()
+    log.info(json.dumps(res),True)
+    my_hash = hashlib.sha256(json.dumps(res)).hexdigest()
     filename = '1' + '-' +  my_hash
     blockchain_filename = config.blockchain_dir + filename
 
@@ -250,7 +249,7 @@ def get_balance(address):
         return 0
 
 def verify_diff(my_hash,difficulty):
-    log.context(my_hash,True)
+    #log.context(my_hash,True)
     #log.context(difficulty,True)
     if int(my_hash,16) <= int(difficulty,16):
         log.context(my_hash,True)

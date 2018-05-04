@@ -33,7 +33,7 @@ class discovery():
             data, address = self.s2.recvfrom(65535)
             if data == self.message:
                 # limit the number of the peers to connect to (using tcp)
-                if len(host_list) < max_host_num and address not in host_list:
+                if not address[0]==my_addr  and len(host_list) < max_host_num and address not in host_list:
                     host_list.append(address)
                     log.info('Find a peer: %s'% str(address))
 

@@ -10,7 +10,7 @@ import rsa
 
 def generate_key():
     pubkey, privkey = rsa.newkeys(512)
-    pubkey = pubkey.n
+    pubkey = hex(pubkey.n)[2:-1]
     privkey = pickle.dumps(privkey).encode('hex')
     return str(pubkey),privkey
 
