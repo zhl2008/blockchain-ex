@@ -59,18 +59,18 @@ class block():
             my_hash = hashlib.sha256(my_block).hexdigest()
             if verify_diff(my_hash,self.difficulty):
                 # find a new block, stop, nonce has been updated
-                log.info('One block has been found!')
+                log.warning('One block has been found!')
                 res = self.output()
                 log.info(json.dumps(res),True)
                 return res
             if config.block_updated:
-                log.info('Meta data has been updated!')
+                log.warning('Meta data has been updated!')
                 # if the meta info has been updated, stop, and then restart
                 config.block_updated = 0
                 return {}
             seed += 1
             #time.sleep(miner_sleep_time)
-            time.sleep(0.1)
+            time.sleep(0.01)
 
     def is_next(self):
         '''

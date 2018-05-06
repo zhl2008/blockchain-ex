@@ -21,6 +21,7 @@ class message(object):
     
     def send(self,peer_address):
         s1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s1.settimeout(config.connection_timeout)
         s1.connect((peer_address,self.msg_port))
         s1.send(self.msg)
 
@@ -105,8 +106,10 @@ class message(object):
                         nonce=nonce,data=data)
                 if(b.verify()):
                     b.update()
+            # if hash mismatches, we ask for the elder block
             else:
                 log.info('Receiving elder block...')
+                config.global_height -= 1
 
         elif config.global_height < height:
             self.request(config.global_height)
@@ -145,8 +148,14 @@ class message(object):
         
     def send_all(self):
         log.info('Broardcasting message...')
-        for host in config.host_list:
-            self.send(host[0])
+        for i in range(len(config.host_list)):
+            host = config.host_list[i][0]
+            try:
+                self.send(host)
+            except Exception,e:
+                log.error(str(e))
+                #if error occurs, remove the host from the host_lists
+                del config.host_list[i]
     
         
 

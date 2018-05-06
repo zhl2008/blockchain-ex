@@ -13,6 +13,7 @@ import Queue
 
 host_list = []
 debug = True
+connection_timeout = 3
 
 ###########################
 
@@ -89,7 +90,6 @@ global_prev_hash = ''
 global_height = ''
 global_difficulty = 'haozigege'
 miner_reward = 100
-admin_pubkey = '9765869799823383359622359754181812625324231512026077082381651287440341672379839014722257386111774035152974440781781367383855004017506803031463021493485593'
 
 ################################
 
