@@ -108,8 +108,17 @@ class message(object):
                     b.update()
             # if hash mismatches, we ask for the elder block
             else:
-                log.info('Receiving elder block...')
+                config.block_updated = 1
+                log.warning('Receiving elder block...')
+                log.context(config.global_prev_hash,True)
+                log.context(prev_hash,True)
+                # you need to delete the elder block file
+                log.warning('Removing elder block...')
+                filename = str(config.global_height-1) + '-' + config.global_prev_hash
+                os.system('rm blockchain/%s/%s'%(my_addr,filename))
                 config.global_height -= 1
+                config.global_prev_hash = blockchain_list[str(config.global_height-1)]
+                config.global_difficulty = update_difficulty(config.global_difficulty)
 
         elif config.global_height < height:
             self.request(config.global_height)

@@ -32,8 +32,8 @@ def miner():
     log.info('Starting miner...')
     while True:
         b = block(prev_hash=config.global_prev_hash,height=config.global_height,difficulty=config.global_difficulty,address=config.pubkey)
-        b.generate()
-        b.update()
+        if(b.generate()):
+            b.update()
 
 def msg_generator():
     log.info('Receiving message...')

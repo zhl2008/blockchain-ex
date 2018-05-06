@@ -90,6 +90,8 @@ class block():
         3. if the miner is from other host, then update the block_updated to 1
         '''
         if not self.is_next():
+            log.error(self.prev_hash,True)
+            log.error(config.global_prev_hash,True)
             log.error('Hash mismatch!')
             return
         log.info('Updating the blocks...')
@@ -115,7 +117,7 @@ class block():
         
 
 
-        
+       
 
     def output(self):
         output = {}
@@ -175,7 +177,7 @@ def load_current_hash():
         if filename!='meta':
             height,my_hash = filename.split('-')
             config.blockchain_list[height] = my_hash
-    tmp = sorted(config.blockchain_list.items(),key=lambda x:x[0])
+    tmp = sorted(config.blockchain_list.items(),key=lambda x:int(x[0]))
     last_block = tmp[-1]
     log.context(str(last_block),True)
     config.global_prev_hash = last_block[1]
