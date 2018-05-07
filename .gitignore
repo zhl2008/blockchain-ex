@@ -1,6 +1,6 @@
 *.py[oc]
 .DS_Store
 *.swp
-logs/*
-blockchain/*
-key/*
+logs/**
+blockchain/**
+key/**

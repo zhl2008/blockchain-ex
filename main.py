@@ -53,6 +53,14 @@ def block_broadcast():
         time.sleep(config.broadcast_time_span)
         m.send_all()
 
+def watch_dog():
+    global thread_array
+    while True:
+        log.context('######  thread status ######')
+        for my_thread in thread_array:
+            log.context(my_thread.name + ' => ' + 'Alive' if my_thread.isAlive() else 'Dead')
+        log.context('######  status ends  ######')
+        time.sleep(60)
 
 if __name__ == "__main__":
 
@@ -80,6 +88,11 @@ if __name__ == "__main__":
     t5.start()
     t6.start()
     
+    thread_array = [t1,t2,t3,t4,t5,t6]
+    t7 = threading.Thread(target=watch_dog,name='watch_dog')
+    t7.setDaemon(True)
+    t7.start()
+
     try:
         while True:
             pass
