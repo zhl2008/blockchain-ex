@@ -59,6 +59,12 @@ class message(object):
                 func = getattr(self,'handle_' + method)
                 func()
 
+    def handle_legacy_reply(self):
+        ''' 
+        when receiving the message of legacy reply, do not reply, just be silent 
+        '''
+        pass
+
     def handle_block_request(self):
         '''
         to handle the block request, we just get the block request, then using the 
@@ -104,6 +110,7 @@ class message(object):
                 b = block(prev_hash=prev_hash,height=height,difficulty=difficulty,\
                         address=address,amount=amount,signature=signature,\
                         nonce=nonce,data=data)
+                print b.verify()
                 if(b.verify()):
                     b.update()
             # if hash mismatches, we ask for the elder block
@@ -112,20 +119,34 @@ class message(object):
                 log.warning('Receiving elder block...')
                 log.context(config.global_prev_hash,True)
                 log.context(prev_hash,True)
+
+                # update the balance
+                log.warning('Updating the balance')
+                filename = config.blockchain_dir + str(config.global_height-1) + '-' + config.global_prev_hash
+                old_block = json.loads(open(filename,'r').read())
+                old_address = old_block['transaction'][0]['input'][1]['address']
+                config.balance_list[old_address] -= miner_reward
+
+                print config.balance_list
                 # you need to delete the elder block file
                 log.warning('Removing elder block...')
-                filename = str(config.global_height-1) + '-' + config.global_prev_hash
-                os.system('rm blockchain/%s/%s'%(my_addr,filename))
+                os.system('rm %s'%(filename))
                 config.global_height -= 1
                 config.global_prev_hash = blockchain_list[str(config.global_height-1)]
                 config.global_difficulty = update_difficulty(config.global_difficulty)
+                
 
         elif config.global_height < height:
             self.request(config.global_height)
             self.send(self.ip_address)
-        else:
+        elif config.global_height-1 == height:
             pass
-
+        else:
+            # if we do nothing, some of the nodes are too stubborn to keep their own
+            # records
+            self.reply(height + 1)
+            self.send(self.ip_address)
+        
         
 
     def request(self,height):
@@ -138,6 +159,9 @@ class message(object):
     def reply(self,height):
         block_hash = config.blockchain_list[str(height)]
         block_filename = config.blockchain_dir + str(height) + '-' + block_hash
+        # the file may be deleted, so, we would better using os.path.exists first
+        if not os.path.exists(block_filename):
+            return legacy_reply(height)
         content = open(block_filename).read()
         msg = {"method":"block_reply","height":height}
         msg["content"] = content
@@ -149,6 +173,8 @@ class message(object):
         extra = json.dumps({"extra":"do not reply"})
         msg = {"method":"legacy_reply","height":height,"content":extra}
         self.msg = json.dumps(msg)
+        log.info('This is legacy reply',True)
+        log.info(self.msg,True)
 
     def admin(self,method):
         method = json.dumps({"method":method})
@@ -165,6 +191,10 @@ class message(object):
                 log.error(str(e))
                 #if error occurs, remove the host from the host_lists
                 del config.host_list[i]
+                # if u don't return, there will be a list-out-of-range-error due to 
+                # the deletion above, we can just stop this turn of broadcast, it 
+                # doesn't hurt
+                return
     
         
 

@@ -143,6 +143,9 @@ class block():
         sign = rsa.sign => (config.pubkey + data)
 
         '''
+        print json.dumps(self.output())
+        print hashlib.sha256(json.dumps(self.output())).hexdigest()
+        print self.difficulty
         flag_1 = rsa.verify(self.address + self.data,self.signature.decode('hex'),rsa.PublicKey(int(self.address, 16), 65537))
         flag_2 = verify_diff(hashlib.sha256(json.dumps(self.output())).hexdigest(),self.difficulty)
         return (flag_1 and flag_2) 
@@ -195,16 +198,24 @@ def load_current_balance():
     '''
     load current balance from files
     '''
-    for height,my_hash in sorted(config.blockchain_list.items(),key=lambda x:x[0],reverse=True):
+    for height,my_hash in sorted(config.blockchain_list.items(),key=lambda x:int(x[0]),reverse=True):
         filename = config.blockchain_dir + height + '-' + my_hash
         block = json.loads(open(filename,'r').read())
         transaction = block['transaction']
         address = transaction[0]['output']['address']
         if address not in balance_list:
             balance = int(transaction[0]['input'][0]['amount']) + int(transaction[0]['input'][1]['amount'])
-            balance_list[address] = balance
+            config.balance_list[address] = balance
 
+    print config.balance_list
 
+def load_block(height):
+    '''
+    load a block at the specific height, return with json.loads(file_content)
+    '''
+    filename = config.blockchain_dir + height + '-' + my_hash
+    block = json.loads(open(filename,'r').read())
+    return block
 
 def generate_genesis_block():
     '''
