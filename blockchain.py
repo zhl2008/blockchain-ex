@@ -53,6 +53,7 @@ class block():
         # $$$$$ to be replaced laterly
         self.nonce = '$$$$$'
         self.time = '*****'
+        self.difficulty = update_difficulty(config.global_difficulty)
         template = json.dumps(self.output())
         seed = 0
         while True:
@@ -74,7 +75,7 @@ class block():
                 return {}
             seed += 1
             #time.sleep(miner_sleep_time)
-            time.sleep(0.01)
+            time.sleep(0.1)
 
     def is_next(self):
         '''
@@ -112,7 +113,7 @@ class block():
         config.blockchain_list[str(self.height)] = my_hash
         config.global_prev_hash = my_hash
         config.global_height = self.height + 1
-        config.global_difficulty = update_difficulty(self.difficulty)
+        config.global_difficulty = self.difficulty
 
         if not self.address==config.pubkey:
             # not our own address, so this block is received from other host
@@ -193,7 +194,7 @@ def load_current_hash():
     last_block_filename = blockchain_dir + last_block[0] + '-' + last_block[1]
     last_block_info = json.loads(open(last_block_filename,'r').read())
     difficulty = last_block_info['difficulty']
-    config.global_difficulty = update_difficulty(difficulty)
+    config.global_difficulty = difficulty
 
 
 
@@ -249,7 +250,7 @@ def generate_genesis_block():
     open(blockchain_filename,'w').write(json.dumps(res))
     config.global_prev_hash = my_hash
     config.global_height = height + 1
-    config.global_difficulty = update_difficulty(difficulty)
+    config.global_difficulty = difficulty
 
 
 def update_difficulty(difficulty):
