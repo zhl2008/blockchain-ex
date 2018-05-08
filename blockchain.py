@@ -74,8 +74,7 @@ class block():
                 config.block_updated = 0
                 return {}
             seed += 1
-            #time.sleep(miner_sleep_time)
-            time.sleep(0.1)
+            time.sleep(miner_sleep_time)
 
     def is_next(self):
         '''
@@ -118,11 +117,6 @@ class block():
         if not self.address==config.pubkey:
             # not our own address, so this block is received from other host
             config.block_updated = 1
-
-        
-
-
-       
 
     def output(self):
         output = {}
@@ -167,7 +161,6 @@ def init_blockchain():
     load_current_hash()
     load_current_balance()
 
-
 def load_current_hash():
     '''
     generate the maps from height to hash
@@ -196,10 +189,6 @@ def load_current_hash():
     difficulty = last_block_info['difficulty']
     config.global_difficulty = difficulty
 
-
-
-
-   
 def load_current_balance():
     '''
     load current balance from files
@@ -260,6 +249,7 @@ def update_difficulty(difficulty):
     calculate and update the difficulty 
     for example, block 2 <-> block 7
     '''
+
     # global height < 8 , no need to update
     if config.global_height <8:
         return difficulty

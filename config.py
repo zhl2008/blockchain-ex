@@ -78,7 +78,7 @@ else:
 #### blockchain config #########
 
 block_updated = 0
-miner_sleep_time = 0.1
+miner_sleep_time = 0.03
 blockchain_dir = 'blockchain/%s/' %my_addr
 balance_list = {}
 blockchain_list = {}
