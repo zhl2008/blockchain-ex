@@ -185,7 +185,7 @@ class message(object):
         block_filename = config.blockchain_dir + str(height) + '-' + block_hash
         # the file may be deleted, so, we would better using os.path.exists first
         if not os.path.exists(block_filename):
-            return legacy_reply(height)
+            return self.legacy_reply(height)
         content = open(block_filename).read()
         msg = {"method":"block_reply","height":height}
         msg["content"] = content

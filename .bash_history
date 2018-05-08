@@ -34,3 +34,7 @@ python message_test.py
 ls
 vi message_test.py 
 exit
+python
+exit
+python
+exit

@@ -29,7 +29,7 @@ class block():
         self.prev_hash = prev_hash
         self.height = height
         self.nonce = nonce
-        self.time = time
+        self.time = str(time)
         self.difficulty = difficulty
         self.address = address
         self.amount = amount
@@ -52,15 +52,18 @@ class block():
         '''
         # $$$$$ to be replaced laterly
         self.nonce = '$$$$$'
+        self.time = '*****'
         template = json.dumps(self.output())
         seed = 0
         while True:
             self.nonce = hashlib.sha256(str(seed)).hexdigest()
-            my_block = template.replace('$$$$$',self.nonce)
+            self.time = str(int(time.time()))
+            my_block = template.replace('$$$$$',self.nonce).replace('*****',self.time)
             my_hash = hashlib.sha256(my_block).hexdigest()
             if verify_diff(my_hash,self.difficulty):
                 # find a new block, stop, nonce has been updated
                 log.warning('One block has been found!')
+                print my_hash,self.difficulty
                 res = self.output()
                 log.context(json.dumps(res),config.debug)
                 return res
@@ -215,7 +218,7 @@ def load_block(height):
     load a block at the specific height, return with json.loads(file_content)
     '''
     my_hash = blockchain_list[str(height)]
-    filename = config.blockchain_dir + height + '-' + my_hash
+    filename = config.blockchain_dir + str(height) + '-' + my_hash
     block = json.loads(open(filename,'r').read())
     return block
 
@@ -263,10 +266,15 @@ def update_difficulty(difficulty):
     update_height_lower = config.global_height - 6
     higher_block = load_block(update_height_higher)
     lower_block = load_block(update_height_lower)
-    time_span = higher_block['time'] - lower_block['time']
+    time_span = int(higher_block['time']) - int(lower_block['time'])
     old_difficulty = higher_block['difficulty']
-    difficulty = old_difficulty * (time_span/ 300)
+    print time_span
+    print old_difficulty
+    difficulty = hex(int(int(old_difficulty,16) * (time_span)/ 300))[2:-1]
+    print hex(int(int(old_difficulty,16) * (time_span) /300))
 
+    log.warning('Difficulty updated: %s'%difficulty,True)
+    
     return difficulty
 
 def get_balance(address):
@@ -279,6 +287,8 @@ def get_balance(address):
         return 0
 
 def verify_diff(my_hash,difficulty):
+    #log.context(difficulty)
+    #log.context(my_hash)
     if int(my_hash,16) <= int(difficulty,16):
         log.context(my_hash,True)
         return True
