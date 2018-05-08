@@ -214,6 +214,7 @@ def load_block(height):
     '''
     load a block at the specific height, return with json.loads(file_content)
     '''
+    my_hash = blockchain_list[str(height)]
     filename = config.blockchain_dir + height + '-' + my_hash
     block = json.loads(open(filename,'r').read())
     return block
@@ -251,7 +252,21 @@ def generate_genesis_block():
 def update_difficulty(difficulty):
     '''
     to update the difficulty according to the former calculation time
+    we use the nodes which has a gap of five blocks as our input, and using the timestamp to
+    calculate and update the difficulty 
+    for example, block 2 <-> block 7
     '''
+    # global height < 8 , no need to update
+    if config.global_height <8:
+        return difficulty
+    update_height_higher = config.global_height - 1
+    update_height_lower = config.global_height - 6
+    higher_block = load_block(update_height_higher)
+    lower_block = load_block(update_height_lower)
+    time_span = higher_block['time'] - lower_block['time']
+    old_difficulty = higher_block['difficulty']
+    difficulty = old_difficulty * (time_span/ 300)
+
     return difficulty
 
 def get_balance(address):
