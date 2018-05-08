@@ -77,19 +77,16 @@ else:
 
 #### blockchain config #########
 
-blockchain_length = 0
-last_block_hash = ''
 block_updated = 0
 miner_sleep_time = 0.1
-block_height = 0
 blockchain_dir = 'blockchain/%s/' %my_addr
-blockinfo = {}
 balance_list = {}
 blockchain_list = {}
 global_prev_hash = ''
 global_height = ''
 global_difficulty = 'haozigege'
 miner_reward = 100
+
 
 ################################
 

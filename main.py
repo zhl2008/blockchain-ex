@@ -24,9 +24,9 @@ def discovery_receive():
 def init_block():
     log.info('Initializing the block...')
     load_current_hash()
-    log.info(str(config.blockchain_list))
+    log.info(str(config.blockchain_list),config.debug)
     load_current_balance()
-    log.info(str(config.balance_list))
+    log.info(str(config.balance_list),config.debug)
 
 def miner():
     log.info('Starting miner...')
@@ -56,11 +56,12 @@ def block_broadcast():
 def watch_dog():
     global thread_array
     while True:
-        log.context('######  thread status ######')
+        time.sleep(5)
+        log.warning('######  thread status ######')
         for my_thread in thread_array:
-            log.context(my_thread.name + ' => ' + 'Alive' if my_thread.isAlive() else 'Dead')
-        log.context('######  status ends  ######')
-        time.sleep(60)
+            log.warning(my_thread.name + ' => ' + 'Alive' if my_thread.isAlive() else 'Dead')
+        log.warning('######  status ends  ######')
+        time.sleep(55)
 
 if __name__ == "__main__":
 

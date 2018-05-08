@@ -27,3 +27,10 @@ python test.py
 python test.py 
 ls
 exit
+ls
+cd /root
+ls
+python message_test.py 
+ls
+vi message_test.py 
+exit

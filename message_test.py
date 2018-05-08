@@ -8,5 +8,5 @@ import config
 from message import *
 
 m = message("",config.message_port)
-m.request(2)
-m.send('172.17.0.2')
+m.global_request(2)
+m.send('172.17.0.4')

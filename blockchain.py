@@ -61,7 +61,7 @@ class block():
                 # find a new block, stop, nonce has been updated
                 log.warning('One block has been found!')
                 res = self.output()
-                log.info(json.dumps(res),True)
+                log.context(json.dumps(res),config.debug)
                 return res
             if config.block_updated:
                 log.warning('Meta data has been updated!')
@@ -97,7 +97,7 @@ class block():
         log.info('Updating the blocks...')
         res = self.output()
         my_hash = hashlib.sha256(json.dumps(res)).hexdigest()
-        log.info(json.dumps(res),True)
+        log.context(json.dumps(res),True)
         filename = config.blockchain_dir + str(self.height) + '-' + my_hash
         open(filename,'w').write(json.dumps(res))
 
@@ -143,9 +143,9 @@ class block():
         sign = rsa.sign => (config.pubkey + data)
 
         '''
-        print json.dumps(self.output())
-        print hashlib.sha256(json.dumps(self.output())).hexdigest()
-        print self.difficulty
+        #print json.dumps(self.output())
+        #print hashlib.sha256(json.dumps(self.output())).hexdigest()
+        #print self.difficulty
         flag_1 = rsa.verify(self.address + self.data,self.signature.decode('hex'),rsa.PublicKey(int(self.address, 16), 65537))
         flag_2 = verify_diff(hashlib.sha256(json.dumps(self.output())).hexdigest(),self.difficulty)
         return (flag_1 and flag_2) 
@@ -207,7 +207,6 @@ def load_current_balance():
             balance = int(transaction[0]['input'][0]['amount']) + int(transaction[0]['input'][1]['amount'])
             config.balance_list[address] = balance
 
-    print config.balance_list
 
 def load_block(height):
     '''
@@ -235,7 +234,7 @@ def generate_genesis_block():
     b = block(prev_hash=prev_hash,height=height,difficulty=difficulty,address=address,nonce=nonce,data=data)
     res = b.output()
     log.info('Generate genesis block...')
-    log.info(json.dumps(res),True)
+    log.context(json.dumps(res),True)
     my_hash = hashlib.sha256(json.dumps(res)).hexdigest()
     filename = '1' + '-' +  my_hash
     blockchain_filename = config.blockchain_dir + filename
@@ -262,8 +261,6 @@ def get_balance(address):
         return 0
 
 def verify_diff(my_hash,difficulty):
-    #log.context(my_hash,True)
-    #log.context(difficulty,True)
     if int(my_hash,16) <= int(difficulty,16):
         log.context(my_hash,True)
         return True

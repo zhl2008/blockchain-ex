@@ -8,6 +8,7 @@
 # hlsearch on (H) or off (h):
 ~h
 # Command Line History (newest to oldest):
+:q
 :q!
 
 # Search String History (newest to oldest):
@@ -21,13 +22,21 @@
 # Registers:
 
 # File marks:
-'0  35  0  ~/discovery.py
+'0  11  0  ~/message_test.py
+'1  35  0  ~/discovery.py
 
 # Jumplist (newest first):
+-'  11  0  ~/message_test.py
+-'  1  0  ~/message_test.py
+-'  35  0  ~/discovery.py
+-'  1  0  ~/discovery.py
 -'  35  0  ~/discovery.py
 -'  1  0  ~/discovery.py
 
 # History of marks within files (newest to oldest):
+
+> ~/message_test.py
+	"	11	0
 
 > ~/discovery.py
 	"	35	0
