@@ -25,10 +25,11 @@ class block():
     generating.
 
     '''
-    def __init__(self,prev_hash,height,difficulty,address,amount=config.miner_reward,signature="",nonce="",data="haozigege"):
+    def __init__(self,prev_hash,height,difficulty,address,amount=config.miner_reward,signature="",nonce="",data="haozigege",time=int(time.time())):
         self.prev_hash = prev_hash
         self.height = height
         self.nonce = nonce
+        self.time = time
         self.difficulty = difficulty
         self.address = address
         self.amount = amount
@@ -125,6 +126,7 @@ class block():
         output['nonce'] = self.nonce
         output['height'] = self.height
         output['difficulty'] = self.difficulty
+        output['time'] = self.time
         output['transaction'] = [{},]
         output['transaction'][0]['input'] = [{},{}]
         output['transaction'][0]['input'][0] = {"address":"god","amount":config.miner_reward}
@@ -230,8 +232,9 @@ def generate_genesis_block():
     height = 1
     data = 'The Times 24/4/2018 Hencecoin start'
     address = config.admin_pubkey
-
-    b = block(prev_hash=prev_hash,height=height,difficulty=difficulty,address=address,nonce=nonce,data=data)
+    # the time in the genesis block, must be the same
+    time = 1525772773
+    b = block(prev_hash=prev_hash,height=height,difficulty=difficulty,address=address,nonce=nonce,data=data,time=time)
     res = b.output()
     log.info('Generate genesis block...')
     log.context(json.dumps(res),True)

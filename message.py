@@ -122,6 +122,7 @@ class message(object):
         amount = self.msg['transaction'][0]['input'][0]['amount']
         signature = self.msg['transaction'][0]['signature']
         nonce = self.msg['nonce']
+        time = self.msg['time']
         data = self.msg['transaction'][0]['data']
         log.info(str(config.global_height)+"|"+str(height),True)
 
@@ -131,7 +132,7 @@ class message(object):
                 log.info('Receiving next block...')
                 b = block(prev_hash=prev_hash,height=height,difficulty=difficulty,\
                         address=address,amount=amount,signature=signature,\
-                        nonce=nonce,data=data)
+                        nonce=nonce,data=data,time=time)
                 if(b.verify()):
                     b.update()
             # if hash mismatches, we ask for the elder block
