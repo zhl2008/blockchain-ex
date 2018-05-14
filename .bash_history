@@ -38,3 +38,11 @@ python
 exit
 python
 exit
+ls
+cd /root
+ls
+python visualization.py 
+vi visualization.py 
+python visualization.py 
+ls
+exit

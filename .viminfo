@@ -22,10 +22,19 @@
 # Registers:
 
 # File marks:
-'0  11  0  ~/message_test.py
-'1  35  0  ~/discovery.py
+'0  127  0  ~/visualization.py
+'1  11  0  ~/message_test.py
+'2  35  0  ~/discovery.py
 
 # Jumplist (newest first):
+-'  127  0  ~/visualization.py
+-'  1  0  ~/visualization.py
+-'  11  0  ~/message_test.py
+-'  1  0  ~/message_test.py
+-'  35  0  ~/discovery.py
+-'  1  0  ~/discovery.py
+-'  35  0  ~/discovery.py
+-'  1  0  ~/discovery.py
 -'  11  0  ~/message_test.py
 -'  1  0  ~/message_test.py
 -'  35  0  ~/discovery.py
@@ -34,6 +43,9 @@
 -'  1  0  ~/discovery.py
 
 # History of marks within files (newest to oldest):
+
+> ~/visualization.py
+	"	127	0
 
 > ~/message_test.py
 	"	11	0

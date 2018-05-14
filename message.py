@@ -92,7 +92,7 @@ class message(object):
         extra['global_pre_hash'] = config.global_prev_hash
         
         extra = json.dumps(extra)
-        msg = {"method":"legacy_reply", "height":self.height,"content":extra}
+        msg = {"method":"global_reply", "height":self.height,"content":extra}
         self.msg = json.dumps(msg)
         self.send(self.ip_address)
         
